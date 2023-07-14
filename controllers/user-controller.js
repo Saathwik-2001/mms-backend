@@ -54,6 +54,7 @@ const login = async (req,res)=>{
     return console.log(err);
     }
     if(!(existingUser)){
+        console.log(`User tried logging in with credentials: ${existingUser}`);
         return res.json({message: "No User with this email exists!"});
     }
     const isPassCorrect = bcrypt.compareSync(password,existingUser.password);
