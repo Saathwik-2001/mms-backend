@@ -14,9 +14,10 @@ const getAllUsers = async (req, res)=>{
         return res.json("No users Found!")
     }
     else{
-        return res.json({users});
+        return res.status(200).json({users});
     }
 }
+
 
 const signup = async (req,res)=>{
     const { username, email, password } = req.body;
@@ -28,11 +29,11 @@ const signup = async (req,res)=>{
     return console.log(err);
     }
     if(existingUser){
-        return res.json({message: "User with same email already exists!"});
+        return res.status(200).json({message: "User with same email already exists!"});
     }
     const p = req.body;
     const hashedPassword = bcrypt.hashSync(password);
-    const newUser = await model.create({username:p.username,email:p.email,password:password,accountID:`${crypto.randomUUID()}_${p.email}`, blogs:[]});
+    const newUser = await model.create({username:p.username,email:p.email,password:hashedPassword,accountID:`${crypto.randomUUID()}_${p.email}`, blogs:[]});
      
     try{
         newUser.save();
@@ -41,8 +42,9 @@ const signup = async (req,res)=>{
     return console.log("couldn't save the data");  
     }
     console.log("New user data saved!");
-    return res.json({newUser})
+    return res.status(200).json({newUser})
 }
+
 
 const login = async (req,res)=>{
     const {email , password} = req.body;
@@ -54,14 +56,14 @@ const login = async (req,res)=>{
     return console.log(err);
     }
     if(!(existingUser)){
-        console.log(`User tried logging in with credentials: ${existingUser}`);
-        return res.json({message: "No User with this email exists!"});
+        console.log(`User tried logging in with credentials: ${email} , ${password}`);
+        return res.status(201).json({message: "No User with this email exists!"});
     }
     const isPassCorrect = bcrypt.compareSync(password,existingUser.password);
     if(!isPassCorrect){
         return res.json("Incorrect Password!");
     }
-    return res.json({message:"Login Successfull!"})
+    return res.status(200).json({message:"Login Successfull!"})
 }
 
 module.exports = {getAllUsers,signup,login};
