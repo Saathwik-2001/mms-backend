@@ -4,7 +4,7 @@ const userRoute = require("./routes/userRoute");
 require("dotenv").config();
 const cors = require("cors");
 const blogRoute = require("./routes/blogRoute");
-
+const bodyParser = require('body-parser');
 mongoose.connect(process.env.MONGO_URL)
 .then(()=>{console.log("DB Connected")})
 .catch((e)=>{console.log("Error")});
@@ -14,7 +14,8 @@ app.use(cors({
     origin:["http://localhost:5000","https://mms-backend-v1.onrender.com","https://mms-backend-v1.onrender.com"]
 }));
 app.use(express.json());
-app.use(express.static("public"))
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/users",userRoute);
 app.use("/api/blogs", blogRoute);
 
