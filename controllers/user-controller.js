@@ -32,7 +32,7 @@ const signup = async (req,res)=>{
     }
     const p = req.body;
     const hashedPassword = bcrypt.hashSync(password);
-    const newUser = await model.create({username:p.username,email:p.email,password:p,accountID:`${crypto.randomUUID()}_${p.email}`, blogs:[]});
+    const newUser = await model.create({username:p.username,email:p.email,password:password,accountID:`${crypto.randomUUID()}_${p.email}`, blogs:[]});
      
     try{
         newUser.save();
