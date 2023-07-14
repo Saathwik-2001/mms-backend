@@ -10,7 +10,9 @@ mongoose.connect(process.env.MONGO_URL)
 .catch((e)=>{console.log("Error")});
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin:["http://localhost:5000","https://mms-backend-v1.onrender.com","https://mms-backend-v1.onrender.com"]
+}));
 app.use(express.json());
 app.use(express.static("public"))
 app.use("/api/users",userRoute);
