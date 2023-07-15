@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose  = require("mongoose");
 const userRoute = require("./routes/userRoute");
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
 const cors = require("cors");
 const blogRoute = require("./routes/blogRoute");
@@ -11,8 +12,10 @@ mongoose.connect(process.env.MONGO_URL)
 
 const app = express();
 app.use(cors({
-    origin:["http://localhost:5000","https://mms-backend-v1.onrender.com","https://mms-backend-v1.onrender.com"]
+    origin:["http://localhost:5000","https://mms-backend-v1.onrender.com"]
 }));
+
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.static("public"));
 app.use(bodyParser.json());
